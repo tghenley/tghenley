@@ -11,7 +11,7 @@ const fs = require("node:fs");
 const crypto = require("node:crypto");
 const Database = require("better-sqlite3");
 
-const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), "data", "henleys.db");
+const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), "data", "henley-studio.db");
 const CURRENCY = process.env.DEFAULT_CURRENCY || "AUD";
 
 fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });

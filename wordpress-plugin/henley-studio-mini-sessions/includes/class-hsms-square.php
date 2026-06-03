@@ -6,7 +6,7 @@
  *
  * @link https://developer.squareup.com/reference/square/checkout-api/create-payment-link
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Square payment links.
  */
-class HMS_Square {
+class HSMS_Square {
 
 	/**
 	 * API base for the configured environment.
@@ -24,7 +24,7 @@ class HMS_Square {
 	 * @return string
 	 */
 	private static function base_url() {
-		$env = strtolower( hms_get_setting( 'square_environment', 'sandbox' ) );
+		$env = strtolower( hsms_get_setting( 'square_environment', 'sandbox' ) );
 		return ( 'production' === $env )
 			? 'https://connect.squareup.com'
 			: 'https://connect.squareupsandbox.com';
@@ -37,7 +37,7 @@ class HMS_Square {
 	 * @return string|WP_Error Hosted checkout URL or error.
 	 */
 	public static function create_payment_link( $args ) {
-		if ( ! hms_square_configured() ) {
+		if ( ! hsms_square_configured() ) {
 			return new WP_Error( 'not_configured', 'Square is not configured.' );
 		}
 		$amount = (int) $args['amount_cents'];
@@ -53,7 +53,7 @@ class HMS_Square {
 					'amount'   => $amount,
 					'currency' => strtoupper( $args['currency'] ),
 				),
-				'location_id' => hms_get_setting( 'square_location_id', '' ),
+				'location_id' => hsms_get_setting( 'square_location_id', '' ),
 			),
 			'checkout_options' => array(
 				'ask_for_shipping_address' => false,
@@ -74,7 +74,7 @@ class HMS_Square {
 				'headers' => array(
 					'Content-Type'   => 'application/json',
 					'Square-Version' => '2024-10-17',
-					'Authorization'  => 'Bearer ' . hms_get_setting( 'square_access_token', '' ),
+					'Authorization'  => 'Bearer ' . hsms_get_setting( 'square_access_token', '' ),
 				),
 				'body'    => wp_json_encode( $body ),
 			)

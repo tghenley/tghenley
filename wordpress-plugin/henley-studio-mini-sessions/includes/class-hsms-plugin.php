@@ -2,7 +2,7 @@
 /**
  * Main plugin orchestrator — instantiates and wires up the components.
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,19 +12,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin bootstrap (singleton).
  */
-class HMS_Plugin {
+class HSMS_Plugin {
 
 	/**
 	 * Singleton instance.
 	 *
-	 * @var HMS_Plugin|null
+	 * @var HSMS_Plugin|null
 	 */
 	private static $instance = null;
 
 	/**
 	 * Get (and on first call, build) the instance.
 	 *
-	 * @return HMS_Plugin
+	 * @return HSMS_Plugin
 	 */
 	public static function instance() {
 		if ( null === self::$instance ) {
@@ -37,14 +37,14 @@ class HMS_Plugin {
 	 * Wire up components.
 	 */
 	private function __construct() {
-		load_plugin_textdomain( 'henleys-mini-sessions', false, dirname( plugin_basename( HMS_FILE ) ) . '/languages' );
+		load_plugin_textdomain( 'henley-studio-mini-sessions', false, dirname( plugin_basename( HSMS_FILE ) ) . '/languages' );
 
-		( new HMS_CPT_Manager() )->init();
-		( new HMS_Shortcodes() )->init();
-		( new HMS_Form_Handler() )->init();
+		( new HSMS_CPT_Manager() )->init();
+		( new HSMS_Shortcodes() )->init();
+		( new HSMS_Form_Handler() )->init();
 
 		if ( is_admin() ) {
-			( new HMS_Admin() )->init();
+			( new HSMS_Admin() )->init();
 		}
 	}
 }

@@ -4,7 +4,7 @@
  * with its booking form, and the booking confirmation — all on one page,
  * switching on query args.
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Front-end shortcode controller.
  */
-class HMS_Shortcodes {
+class HSMS_Shortcodes {
 
 	/**
 	 * Register the shortcode and assets.
@@ -28,7 +28,7 @@ class HMS_Shortcodes {
 	 * Register (but don't force-load) the stylesheet.
 	 */
 	public function register_assets() {
-		wp_register_style( 'hms-frontend', HMS_URL . 'assets/style.css', array(), HMS_VERSION );
+		wp_register_style( 'hsms-frontend', HSMS_URL . 'assets/style.css', array(), HSMS_VERSION );
 	}
 
 	/**
@@ -38,12 +38,12 @@ class HMS_Shortcodes {
 	 * @return string
 	 */
 	public function render( $atts ) {
-		wp_enqueue_style( 'hms-frontend' );
+		wp_enqueue_style( 'hsms-frontend' );
 
 		// Confirmation view.
-		$booking_id = isset( $_GET['hms_booking'] ) ? absint( $_GET['hms_booking'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$booking_id = isset( $_GET['hsms_booking'] ) ? absint( $_GET['hsms_booking'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( $booking_id ) {
-			$booking = HMS_Bookings::get_with_slot( $booking_id );
+			$booking = HSMS_Bookings::get_with_slot( $booking_id );
 			if ( $booking ) {
 				$session = get_post( $booking->session_id );
 				return self::template(
@@ -58,17 +58,17 @@ class HMS_Shortcodes {
 		}
 
 		// Single session + booking form.
-		$slug = isset( $_GET['hms_session'] ) ? sanitize_title( wp_unslash( $_GET['hms_session'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$slug = isset( $_GET['hsms_session'] ) ? sanitize_title( wp_unslash( $_GET['hsms_session'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( $slug ) {
 			$session = self::get_session_by_slug( $slug );
 			if ( $session ) {
-				$error = isset( $_GET['hms_error'] ) ? sanitize_text_field( wp_unslash( $_GET['hms_error'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-				$preselect = isset( $_GET['hms_slot'] ) ? absint( $_GET['hms_slot'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$error = isset( $_GET['hsms_error'] ) ? sanitize_text_field( wp_unslash( $_GET['hsms_error'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$preselect = isset( $_GET['hsms_slot'] ) ? absint( $_GET['hsms_slot'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				return self::template(
 					'single',
 					array(
 						'session'   => $session,
-						'slots'     => HMS_Slots::for_session( $session->ID ),
+						'slots'     => HSMS_Slots::for_session( $session->ID ),
 						'error'     => $error,
 						'preselect' => $preselect,
 					)
@@ -90,7 +90,7 @@ class HMS_Shortcodes {
 		$posts = get_posts(
 			array(
 				'name'        => $slug,
-				'post_type'   => HMS_CPT,
+				'post_type'   => HSMS_CPT,
 				'post_status' => 'publish',
 				'numberposts' => 1,
 			)
@@ -106,15 +106,15 @@ class HMS_Shortcodes {
 	public static function upcoming_sessions() {
 		return get_posts(
 			array(
-				'post_type'      => HMS_CPT,
+				'post_type'      => HSMS_CPT,
 				'post_status'    => 'publish',
 				'numberposts'    => -1,
-				'meta_key'       => '_hms_session_date', // phpcs:ignore WordPress.DB.SlowDBQuery
+				'meta_key'       => '_hsms_session_date', // phpcs:ignore WordPress.DB.SlowDBQuery
 				'orderby'        => 'meta_value',
 				'order'          => 'ASC',
 				'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery
 					array(
-						'key'     => '_hms_session_date',
+						'key'     => '_hsms_session_date',
 						'value'   => gmdate( 'Y-m-d', current_time( 'timestamp' ) - DAY_IN_SECONDS ), // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp
 						'compare' => '>=',
 						'type'    => 'DATE',
@@ -132,7 +132,7 @@ class HMS_Shortcodes {
 	 * @return string
 	 */
 	public static function template( $name, $vars = array() ) {
-		$file = HMS_DIR . 'templates/' . $name . '.php';
+		$file = HSMS_DIR . 'templates/' . $name . '.php';
 		if ( ! file_exists( $file ) ) {
 			return '';
 		}

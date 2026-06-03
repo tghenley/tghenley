@@ -6,11 +6,11 @@ import path from "node:path";
 // SQLite connection (singleton across hot reloads in dev).
 // ------------------------------------------------------------------
 
-const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), "data", "henleys.db");
+const DB_PATH = process.env.DATABASE_PATH || path.join(process.cwd(), "data", "henley-studio.db");
 
 declare global {
   // eslint-disable-next-line no-var
-  var __henleysDb: Database.Database | undefined;
+  var __henleyStudioDb: Database.Database | undefined;
 }
 
 function createDb(): Database.Database {
@@ -72,8 +72,8 @@ function migrate(database: Database.Database): void {
 }
 
 export function getDb(): Database.Database {
-  if (!global.__henleysDb) {
-    global.__henleysDb = createDb();
+  if (!global.__henleyStudioDb) {
+    global.__henleyStudioDb = createDb();
   }
-  return global.__henleysDb;
+  return global.__henleyStudioDb;
 }

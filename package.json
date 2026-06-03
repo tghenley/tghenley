@@ -1,8 +1,8 @@
 {
-  "name": "henleys-studio-mini-sessions",
+  "name": "henley-studio-mini-sessions",
   "version": "0.1.0",
   "private": true,
-  "description": "Mini session booking app for Henley's Studio",
+  "description": "Mini session booking app for Henley Studio",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

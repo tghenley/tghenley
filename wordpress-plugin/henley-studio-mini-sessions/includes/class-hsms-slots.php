@@ -2,7 +2,7 @@
 /**
  * Slot generation and queries.
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Slot data access.
  */
-class HMS_Slots {
+class HSMS_Slots {
 
 	/**
 	 * Build slot start/end pairs for a session from its schedule meta.
@@ -21,11 +21,11 @@ class HMS_Slots {
 	 * @return array[] Array of array( 'start' => 'Y-m-d H:i:s', 'end' => ... ).
 	 */
 	public static function build( $session_id ) {
-		$date     = get_post_meta( $session_id, '_hms_session_date', true );
-		$start    = get_post_meta( $session_id, '_hms_start_time', true );
-		$end      = get_post_meta( $session_id, '_hms_end_time', true );
-		$duration = (int) get_post_meta( $session_id, '_hms_slot_duration', true );
-		$break    = (int) get_post_meta( $session_id, '_hms_break_min', true );
+		$date     = get_post_meta( $session_id, '_hsms_session_date', true );
+		$start    = get_post_meta( $session_id, '_hsms_start_time', true );
+		$end      = get_post_meta( $session_id, '_hsms_end_time', true );
+		$duration = (int) get_post_meta( $session_id, '_hsms_slot_duration', true );
+		$break    = (int) get_post_meta( $session_id, '_hsms_break_min', true );
 
 		$out = array();
 		if ( ! $date || ! $start || ! $end || $duration <= 0 ) {
@@ -62,7 +62,7 @@ class HMS_Slots {
 	 */
 	public static function generate( $session_id ) {
 		global $wpdb;
-		$table = HMS_Install::slots_table();
+		$table = HSMS_Install::slots_table();
 		$slots = self::build( $session_id );
 
 		$created = 0;
@@ -89,7 +89,7 @@ class HMS_Slots {
 	 */
 	public static function regenerate( $session_id ) {
 		global $wpdb;
-		$table = HMS_Install::slots_table();
+		$table = HSMS_Install::slots_table();
 		$wpdb->delete( $table, array( 'session_id' => $session_id ), array( '%d' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		self::generate( $session_id );
 	}
@@ -102,7 +102,7 @@ class HMS_Slots {
 	 */
 	public static function for_session( $session_id ) {
 		global $wpdb;
-		$table = HMS_Install::slots_table();
+		$table = HSMS_Install::slots_table();
 		return $wpdb->get_results( // phpcs:ignore WordPress.DB
 			$wpdb->prepare( "SELECT * FROM {$table} WHERE session_id = %d ORDER BY start_time ASC", $session_id )
 		);
@@ -116,7 +116,7 @@ class HMS_Slots {
 	 */
 	public static function get( $slot_id ) {
 		global $wpdb;
-		$table = HMS_Install::slots_table();
+		$table = HSMS_Install::slots_table();
 		return $wpdb->get_row( // phpcs:ignore WordPress.DB
 			$wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $slot_id )
 		);
@@ -130,7 +130,7 @@ class HMS_Slots {
 	 */
 	public static function counts( $session_id ) {
 		global $wpdb;
-		$table = HMS_Install::slots_table();
+		$table = HSMS_Install::slots_table();
 		$row   = $wpdb->get_row( // phpcs:ignore WordPress.DB
 			$wpdb->prepare(
 				"SELECT COUNT(*) AS total, SUM(CASE WHEN status = 'open' THEN 1 ELSE 0 END) AS open FROM {$table} WHERE session_id = %d",

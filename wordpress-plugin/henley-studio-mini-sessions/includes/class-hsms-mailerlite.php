@@ -5,7 +5,7 @@
  *
  * @link https://developers.mailerlite.com/docs/subscribers.html
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * MailerLite API client.
  */
-class HMS_MailerLite {
+class HSMS_MailerLite {
 
 	/**
 	 * Upsert a subscriber and (optionally) add them to the configured group.
@@ -29,7 +29,7 @@ class HMS_MailerLite {
 	 * @return true|WP_Error
 	 */
 	public static function subscribe( $email, $name = '', $phone = '' ) {
-		if ( ! hms_mailerlite_configured() ) {
+		if ( ! hsms_mailerlite_configured() ) {
 			return new WP_Error( 'not_configured', 'MailerLite is not configured.' );
 		}
 		if ( ! is_email( $email ) ) {
@@ -48,7 +48,7 @@ class HMS_MailerLite {
 		if ( $fields ) {
 			$body['fields'] = $fields;
 		}
-		$group = hms_get_setting( 'mailerlite_group_id', '' );
+		$group = hsms_get_setting( 'mailerlite_group_id', '' );
 		if ( '' !== $group ) {
 			$body['groups'] = array( $group );
 		}
@@ -60,7 +60,7 @@ class HMS_MailerLite {
 				'headers' => array(
 					'Content-Type'  => 'application/json',
 					'Accept'        => 'application/json',
-					'Authorization' => 'Bearer ' . hms_get_setting( 'mailerlite_api_key', '' ),
+					'Authorization' => 'Bearer ' . hsms_get_setting( 'mailerlite_api_key', '' ),
 				),
 				'body'    => wp_json_encode( $body ),
 			)

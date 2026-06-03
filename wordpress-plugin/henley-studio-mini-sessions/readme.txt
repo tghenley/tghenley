@@ -1,5 +1,5 @@
 === Henley Studio — Mini Sessions ===
-Contributors: henleysstudio
+Contributors: henleystudio
 Tags: booking, photography, mini sessions, appointments, square
 Requires at least: 6.0
 Tested up to: 6.7
@@ -36,7 +36,7 @@ No WooCommerce required.
 
 == Installation ==
 
-1. Upload the `henleys-mini-sessions` folder to `/wp-content/plugins/`, or
+1. Upload the `henley-studio-mini-sessions` folder to `/wp-content/plugins/`, or
    install the zip via Plugins → Add New → Upload.
 2. Activate the plugin through the Plugins menu.
 3. Create a WordPress Page (e.g. "Book a Session") and add the shortcode:

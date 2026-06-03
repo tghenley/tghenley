@@ -2,7 +2,7 @@
 /**
  * Booking creation and queries.
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Booking data access.
  */
-class HMS_Bookings {
+class HSMS_Bookings {
 
 	/**
 	 * Create a booking, atomically claiming the slot.
@@ -22,8 +22,8 @@ class HMS_Bookings {
 	 */
 	public static function create( $args ) {
 		global $wpdb;
-		$slots_table    = HMS_Install::slots_table();
-		$bookings_table = HMS_Install::bookings_table();
+		$slots_table    = HSMS_Install::slots_table();
+		$bookings_table = HSMS_Install::bookings_table();
 
 		$slot_id = (int) $args['slot_id'];
 
@@ -33,7 +33,7 @@ class HMS_Bookings {
 		);
 
 		if ( 1 !== (int) $claimed ) {
-			return new WP_Error( 'slot_taken', __( 'Sorry, that time has just been taken. Please choose another.', 'henleys-mini-sessions' ) );
+			return new WP_Error( 'slot_taken', __( 'Sorry, that time has just been taken. Please choose another.', 'henley-studio-mini-sessions' ) );
 		}
 
 		$inserted = $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
@@ -57,7 +57,7 @@ class HMS_Bookings {
 		if ( ! $inserted ) {
 			// Roll the slot back so it isn't stuck as booked with no booking.
 			$wpdb->update( $slots_table, array( 'status' => 'open' ), array( 'id' => $slot_id ), array( '%s' ), array( '%d' ) ); // phpcs:ignore WordPress.DB
-			return new WP_Error( 'insert_failed', __( 'Something went wrong saving your booking. Please try again.', 'henleys-mini-sessions' ) );
+			return new WP_Error( 'insert_failed', __( 'Something went wrong saving your booking. Please try again.', 'henley-studio-mini-sessions' ) );
 		}
 
 		return (int) $wpdb->insert_id;
@@ -71,7 +71,7 @@ class HMS_Bookings {
 	 */
 	public static function get( $id ) {
 		global $wpdb;
-		$table = HMS_Install::bookings_table();
+		$table = HSMS_Install::bookings_table();
 		return $wpdb->get_row( // phpcs:ignore WordPress.DB
 			$wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", $id )
 		);
@@ -85,8 +85,8 @@ class HMS_Bookings {
 	 */
 	public static function get_with_slot( $id ) {
 		global $wpdb;
-		$b = HMS_Install::bookings_table();
-		$s = HMS_Install::slots_table();
+		$b = HSMS_Install::bookings_table();
+		$s = HSMS_Install::slots_table();
 		return $wpdb->get_row( // phpcs:ignore WordPress.DB
 			$wpdb->prepare(
 				"SELECT bk.*, sl.start_time AS slot_start, sl.end_time AS slot_end
@@ -105,8 +105,8 @@ class HMS_Bookings {
 	 */
 	public static function for_session( $session_id ) {
 		global $wpdb;
-		$b = HMS_Install::bookings_table();
-		$s = HMS_Install::slots_table();
+		$b = HSMS_Install::bookings_table();
+		$s = HSMS_Install::slots_table();
 		return $wpdb->get_results( // phpcs:ignore WordPress.DB
 			$wpdb->prepare(
 				"SELECT bk.*, sl.start_time AS slot_start, sl.end_time AS slot_end
@@ -125,8 +125,8 @@ class HMS_Bookings {
 	 */
 	public static function all() {
 		global $wpdb;
-		$b = HMS_Install::bookings_table();
-		$s = HMS_Install::slots_table();
+		$b = HSMS_Install::bookings_table();
+		$s = HSMS_Install::slots_table();
 		return $wpdb->get_results( // phpcs:ignore WordPress.DB
 			"SELECT bk.*, sl.start_time AS slot_start, sl.end_time AS slot_end
 			 FROM {$b} bk JOIN {$s} sl ON sl.id = bk.slot_id
@@ -143,7 +143,7 @@ class HMS_Bookings {
 	public static function set_payment_link( $id, $link ) {
 		global $wpdb;
 		$wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			HMS_Install::bookings_table(),
+			HSMS_Install::bookings_table(),
 			array( 'payment_link' => $link ),
 			array( 'id' => $id ),
 			array( '%s' ),
@@ -160,7 +160,7 @@ class HMS_Bookings {
 	 */
 	public static function update_status( $id, $status ) {
 		global $wpdb;
-		if ( ! in_array( $status, HMS_STATUS_VALUES, true ) ) {
+		if ( ! in_array( $status, HSMS_STATUS_VALUES, true ) ) {
 			return false;
 		}
 		$booking = self::get( $id );
@@ -169,7 +169,7 @@ class HMS_Bookings {
 		}
 
 		$wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			HMS_Install::bookings_table(),
+			HSMS_Install::bookings_table(),
 			array( 'status' => $status ),
 			array( 'id' => $id ),
 			array( '%s' ),
@@ -178,7 +178,7 @@ class HMS_Bookings {
 
 		$slot_status = ( 'cancelled' === $status ) ? 'open' : 'booked';
 		$wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			HMS_Install::slots_table(),
+			HSMS_Install::slots_table(),
 			array( 'status' => $slot_status ),
 			array( 'id' => $booking->slot_id ),
 			array( '%s' ),

@@ -4,14 +4,14 @@ Two ways to run mini-session booking for Henley Studio are included in this repo
 
 | Option | Where it lives | Best when |
 | --- | --- | --- |
-| **WordPress plugin** → [`wordpress-plugin/henleys-mini-sessions/`](wordpress-plugin/henleys-mini-sessions/) | Inside your existing WordPress site | You want booking native to your WP site, in your theme, managed from wp-admin, with no recurring fees. **(Recommended for the existing WordPress site.)** |
+| **WordPress plugin** → [`wordpress-plugin/henley-studio-mini-sessions/`](wordpress-plugin/henley-studio-mini-sessions/) | Inside your existing WordPress site | You want booking native to your WP site, in your theme, managed from wp-admin, with no recurring fees. **(Recommended for the existing WordPress site.)** |
 | **Standalone Next.js app** (below) | A separate deployable web app | You want a dedicated booking site/subdomain, or a starting point independent of WordPress. |
 
 Both share the same model and flow: clients browse open sessions, pick a time
 slot, and reserve; you manage everything privately; deposits are collected via
 **Square** (hosted checkout — Square handles all card security), with an
 **invoice fallback** when Square isn't configured. See the plugin's
-[`readme.txt`](wordpress-plugin/henleys-mini-sessions/readme.txt) for install steps.
+[`readme.txt`](wordpress-plugin/henley-studio-mini-sessions/readme.txt) for install steps.
 
 ---
 
@@ -104,7 +104,7 @@ annotated list. The essentials:
 | `NEXT_PUBLIC_TAGLINE` | Tagline under the name (default: Mini Sessions). |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Contact email shown to clients. |
 | `DEFAULT_CURRENCY` | Default currency for new sessions (e.g. `AUD`, `USD`). |
-| `DATABASE_PATH` | Where the SQLite file lives (default `./data/henleys.db`). |
+| `DATABASE_PATH` | Where the SQLite file lives (default `./data/henley-studio.db`). |
 | `NEXT_PUBLIC_BASE_URL` | Public URL of the app (used for Square redirects). |
 
 ### Enabling Square payments

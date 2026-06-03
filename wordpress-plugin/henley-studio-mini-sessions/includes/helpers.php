@@ -2,24 +2,24 @@
 /**
  * Shared helpers: settings access, money/date formatting, link building.
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const HMS_CPT          = 'mini_session';
-const HMS_OPTION       = 'hms_settings';
-const HMS_BOOK_ACTION  = 'hms_book';
-const HMS_STATUS_VALUES = array( 'pending', 'confirmed', 'paid', 'cancelled' );
+const HSMS_CPT          = 'mini_session';
+const HSMS_OPTION       = 'hsms_settings';
+const HSMS_BOOK_ACTION  = 'hsms_book';
+const HSMS_STATUS_VALUES = array( 'pending', 'confirmed', 'paid', 'cancelled' );
 
 /**
  * Default plugin settings, merged with stored values.
  *
  * @return array
  */
-function hms_default_settings() {
+function hsms_default_settings() {
 	return array(
 		'studio_name'          => "Henley Studio",
 		'tagline'              => 'Mini Sessions',
@@ -32,6 +32,13 @@ function hms_default_settings() {
 		'mailerlite_api_key'   => '',
 		'mailerlite_group_id'  => '',
 		'mailerlite_consent_label' => 'Add me to the list for news and future mini sessions.',
+		'twilio_account_sid'   => '',
+		'twilio_auth_token'    => '',
+		'twilio_from'          => '',
+		'sms_country_code'     => '61',
+		'sms_send_confirmation'=> '1',
+		'sms_send_reminder'    => '1',
+		'sms_reminder_hours'   => '24',
 	);
 }
 
@@ -40,12 +47,12 @@ function hms_default_settings() {
  *
  * @return array
  */
-function hms_get_settings() {
-	$saved = get_option( HMS_OPTION, array() );
+function hsms_get_settings() {
+	$saved = get_option( HSMS_OPTION, array() );
 	if ( ! is_array( $saved ) ) {
 		$saved = array();
 	}
-	return wp_parse_args( $saved, hms_default_settings() );
+	return wp_parse_args( $saved, hsms_default_settings() );
 }
 
 /**
@@ -55,8 +62,8 @@ function hms_get_settings() {
  * @param mixed  $default Fallback value.
  * @return mixed
  */
-function hms_get_setting( $key, $default = '' ) {
-	$settings = hms_get_settings();
+function hsms_get_setting( $key, $default = '' ) {
+	$settings = hsms_get_settings();
 	return isset( $settings[ $key ] ) && '' !== $settings[ $key ] ? $settings[ $key ] : $default;
 }
 
@@ -65,8 +72,8 @@ function hms_get_setting( $key, $default = '' ) {
  *
  * @return bool
  */
-function hms_square_configured() {
-	return '' !== hms_get_setting( 'square_access_token', '' ) && '' !== hms_get_setting( 'square_location_id', '' );
+function hsms_square_configured() {
+	return '' !== hsms_get_setting( 'square_access_token', '' ) && '' !== hsms_get_setting( 'square_location_id', '' );
 }
 
 /**
@@ -74,8 +81,8 @@ function hms_square_configured() {
  *
  * @return string
  */
-function hms_payment_mode() {
-	return hms_square_configured() ? 'square' : 'invoice';
+function hsms_payment_mode() {
+	return hsms_square_configured() ? 'square' : 'invoice';
 }
 
 /**
@@ -83,8 +90,8 @@ function hms_payment_mode() {
  *
  * @return bool
  */
-function hms_mailerlite_configured() {
-	return '' !== hms_get_setting( 'mailerlite_api_key', '' );
+function hsms_mailerlite_configured() {
+	return '' !== hsms_get_setting( 'mailerlite_api_key', '' );
 }
 
 /**
@@ -93,7 +100,7 @@ function hms_mailerlite_configured() {
  * @param mixed $value Dollar amount.
  * @return int
  */
-function hms_dollars_to_cents( $value ) {
+function hsms_dollars_to_cents( $value ) {
 	$n = is_numeric( $value ) ? (float) $value : 0.0;
 	if ( $n < 0 ) {
 		$n = 0.0;
@@ -108,7 +115,7 @@ function hms_dollars_to_cents( $value ) {
  * @param string $currency ISO currency code.
  * @return string
  */
-function hms_format_money( $cents, $currency ) {
+function hsms_format_money( $cents, $currency ) {
 	$currency = strtoupper( $currency ? $currency : 'AUD' );
 	$amount   = $cents / 100;
 
@@ -128,7 +135,7 @@ function hms_format_money( $cents, $currency ) {
  * @param string $ymd Date string.
  * @return string
  */
-function hms_format_date( $ymd ) {
+function hsms_format_date( $ymd ) {
 	$ts = strtotime( $ymd );
 	if ( ! $ts ) {
 		return $ymd;
@@ -142,7 +149,7 @@ function hms_format_date( $ymd ) {
  * @param string $datetime Datetime string.
  * @return string
  */
-function hms_format_time( $datetime ) {
+function hsms_format_time( $datetime ) {
 	$ts = strtotime( $datetime );
 	if ( ! $ts ) {
 		return $datetime;
@@ -157,8 +164,8 @@ function hms_format_time( $datetime ) {
  * @param string $end   End datetime.
  * @return string
  */
-function hms_format_time_range( $start, $end ) {
-	return hms_format_time( $start ) . ' – ' . hms_format_time( $end );
+function hsms_format_time_range( $start, $end ) {
+	return hsms_format_time( $start ) . ' – ' . hsms_format_time( $end );
 }
 
 /**
@@ -166,8 +173,8 @@ function hms_format_time_range( $start, $end ) {
  *
  * @return string
  */
-function hms_base_url() {
-	$page_id = (int) hms_get_setting( 'booking_page_id', 0 );
+function hsms_base_url() {
+	$page_id = (int) hsms_get_setting( 'booking_page_id', 0 );
 	if ( $page_id ) {
 		$url = get_permalink( $page_id );
 		if ( $url ) {
@@ -191,8 +198,8 @@ function hms_base_url() {
  * @param array $args Query arguments.
  * @return string
  */
-function hms_url( $args = array() ) {
-	return add_query_arg( $args, hms_base_url() );
+function hsms_url( $args = array() ) {
+	return add_query_arg( $args, hsms_base_url() );
 }
 
 /**
@@ -201,12 +208,12 @@ function hms_url( $args = array() ) {
  * @param WP_Post|int $session Session post or ID.
  * @return string
  */
-function hms_session_url( $session ) {
+function hsms_session_url( $session ) {
 	$post = get_post( $session );
 	if ( ! $post ) {
-		return hms_base_url();
+		return hsms_base_url();
 	}
-	return hms_url( array( 'hms_session' => $post->post_name ) );
+	return hsms_url( array( 'hsms_session' => $post->post_name ) );
 }
 
 /**
@@ -215,6 +222,6 @@ function hms_session_url( $session ) {
  * @param int $booking_id Booking ID.
  * @return string
  */
-function hms_booking_url( $booking_id ) {
-	return hms_url( array( 'hms_booking' => (int) $booking_id ) );
+function hsms_booking_url( $booking_id ) {
+	return hsms_url( array( 'hsms_booking' => (int) $booking_id ) );
 }

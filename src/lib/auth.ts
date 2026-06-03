@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 // Lightweight cookie-based admin session. We sign a fixed token with the
 // SESSION_SECRET; presence of a valid signed cookie means "logged in".
 
-const COOKIE_NAME = "henleys_admin";
+const COOKIE_NAME = "henley_studio_admin";
 const TOKEN_VALUE = "admin-ok";
 
 function secret(): string {

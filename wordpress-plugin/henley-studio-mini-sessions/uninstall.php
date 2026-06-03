@@ -3,7 +3,7 @@
  * Uninstall cleanup — runs when the plugin is deleted from WordPress.
  * Removes plugin data (sessions, slots, bookings, settings).
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
@@ -13,8 +13,8 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 global $wpdb;
 
 // Delete custom tables.
-$slots    = $wpdb->prefix . 'hms_slots';
-$bookings = $wpdb->prefix . 'hms_bookings';
+$slots    = $wpdb->prefix . 'hsms_slots';
+$bookings = $wpdb->prefix . 'hsms_bookings';
 $wpdb->query( "DROP TABLE IF EXISTS {$bookings}" ); // phpcs:ignore WordPress.DB
 $wpdb->query( "DROP TABLE IF EXISTS {$slots}" ); // phpcs:ignore WordPress.DB
 
@@ -32,4 +32,4 @@ foreach ( $session_ids as $id ) {
 }
 
 // Delete settings.
-delete_option( 'hms_settings' );
+delete_option( 'hsms_settings' );

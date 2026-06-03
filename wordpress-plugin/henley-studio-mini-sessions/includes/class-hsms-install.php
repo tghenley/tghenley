@@ -2,7 +2,7 @@
 /**
  * Activation / deactivation: create database tables and defaults.
  *
- * @package HenleysMiniSessions
+ * @package HenleyStudioMiniSessions
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Install routines.
  */
-class HMS_Install {
+class HSMS_Install {
 
 	/**
 	 * Slots table name.
@@ -21,7 +21,7 @@ class HMS_Install {
 	 */
 	public static function slots_table() {
 		global $wpdb;
-		return $wpdb->prefix . 'hms_slots';
+		return $wpdb->prefix . 'hsms_slots';
 	}
 
 	/**
@@ -31,7 +31,7 @@ class HMS_Install {
 	 */
 	public static function bookings_table() {
 		global $wpdb;
-		return $wpdb->prefix . 'hms_bookings';
+		return $wpdb->prefix . 'hsms_bookings';
 	}
 
 	/**
@@ -40,12 +40,12 @@ class HMS_Install {
 	public static function activate() {
 		self::create_tables();
 
-		if ( false === get_option( HMS_OPTION ) ) {
-			add_option( HMS_OPTION, hms_default_settings() );
+		if ( false === get_option( HSMS_OPTION ) ) {
+			add_option( HSMS_OPTION, hsms_default_settings() );
 		}
 
 		// The CPT isn't registered yet on activation, so register then flush.
-		HMS_CPT_Manager::register_post_type();
+		HSMS_CPT_Manager::register_post_type();
 		flush_rewrite_rules();
 	}
 
