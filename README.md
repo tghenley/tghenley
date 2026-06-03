@@ -1,8 +1,8 @@
-# 📣 Marketing Ideas
+# 📸 Henley Studio — Marketing Ideas
 
-A planner full of marketing ideas, organized by month, where you choose **what you're currently doing** and **what you could do next**.
+A marketing planner for **Henley Studio** — a luxury portrait, headshot, personal branding & boudoir photography studio in **South East Brisbane, Australia**. Browse ideas by month and choose **what you're currently doing** and **what you could do next**.
 
-It ships pre-loaded with 60+ curated marketing ideas spanning 14 channels and every month of the year — plus the ability to add your own. Everything you do is saved automatically in your browser.
+It ships pre-loaded with 65+ marketing ideas tailored to a photography studio — transformation reveals, what-to-wear guides, MUA/stylist collabs, gift vouchers, mini-sessions, wall-art upsells and more — spanning 14 channels and every month of the year. The calendar is **Australian-season aware** (reversed seasons, EOFY/tax-time branding shoots in June, AU Father's Day in September, summer Christmas, Spring Racing glam, etc.). You can also add your own ideas, and everything you do is saved automatically in your browser.
 
 ## ✨ Features
 

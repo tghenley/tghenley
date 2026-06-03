@@ -465,8 +465,8 @@
   }
 
   const VIEW_META = {
-    dashboard: { title: "Dashboard", sub: "Your marketing command center" },
-    calendar:  { title: "By Month", sub: "Seasonal ideas all year round" },
+    dashboard: { title: "Dashboard", sub: "Henley Studio marketing command center" },
+    calendar:  { title: "By Month", sub: "Seasonal ideas, tuned to the Australian calendar" },
     library:   { title: "Idea Library", sub: "Browse, filter & plan every idea" },
     board:     { title: "My Board", sub: "Drag ideas across Could Do → Doing → Done" },
   };
