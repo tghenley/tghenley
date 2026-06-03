@@ -186,4 +186,48 @@ class HSMS_Bookings {
 		);
 		return true;
 	}
+
+	/**
+	 * Bookings whose slot starts within the reminder window, that have a phone
+	 * number, are not cancelled, and have not yet been reminded.
+	 *
+	 * @param string $now       "Y-m-d H:i:s" (site local) lower bound (exclusive).
+	 * @param string $threshold "Y-m-d H:i:s" (site local) upper bound (inclusive).
+	 * @return array
+	 */
+	public static function due_for_reminder( $now, $threshold ) {
+		global $wpdb;
+		$b = HSMS_Install::bookings_table();
+		$s = HSMS_Install::slots_table();
+		return $wpdb->get_results( // phpcs:ignore WordPress.DB
+			$wpdb->prepare(
+				"SELECT bk.*, sl.start_time AS slot_start, sl.end_time AS slot_end
+				 FROM {$b} bk JOIN {$s} sl ON sl.id = bk.slot_id
+				 WHERE bk.reminder_sent_at IS NULL
+				   AND bk.status != 'cancelled'
+				   AND bk.client_phone != ''
+				   AND sl.start_time > %s
+				   AND sl.start_time <= %s
+				 ORDER BY sl.start_time ASC",
+				$now,
+				$threshold
+			)
+		);
+	}
+
+	/**
+	 * Mark a booking as having had its reminder sent.
+	 *
+	 * @param int $id Booking ID.
+	 */
+	public static function mark_reminded( $id ) {
+		global $wpdb;
+		$wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			HSMS_Install::bookings_table(),
+			array( 'reminder_sent_at' => current_time( 'mysql' ) ),
+			array( 'id' => $id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+	}
 }

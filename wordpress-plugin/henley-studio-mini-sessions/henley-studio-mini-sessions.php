@@ -30,6 +30,8 @@ require_once HSMS_DIR . 'includes/class-hsms-slots.php';
 require_once HSMS_DIR . 'includes/class-hsms-bookings.php';
 require_once HSMS_DIR . 'includes/class-hsms-square.php';
 require_once HSMS_DIR . 'includes/class-hsms-mailerlite.php';
+require_once HSMS_DIR . 'includes/class-hsms-sms.php';
+require_once HSMS_DIR . 'includes/class-hsms-reminders.php';
 require_once HSMS_DIR . 'includes/class-hsms-shortcodes.php';
 require_once HSMS_DIR . 'includes/class-hsms-form-handler.php';
 require_once HSMS_DIR . 'includes/class-hsms-admin.php';

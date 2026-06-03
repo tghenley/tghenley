@@ -31,6 +31,9 @@ by usesession.com but living natively in your own WordPress site.
 * Booking confirmation emails to both you and the client.
 * Optional MailerLite newsletter sign-up: a consent checkbox on the booking
   form adds consenting clients to your MailerLite group automatically.
+* Optional SMS via Twilio: an instant booking confirmation text and an
+  automatic reminder a configurable number of hours before the session
+  (sent by an hourly background task) — the biggest no-show reducer.
 
 No WooCommerce required.
 

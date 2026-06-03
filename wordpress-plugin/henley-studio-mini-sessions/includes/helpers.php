@@ -95,6 +95,56 @@ function hsms_mailerlite_configured() {
 }
 
 /**
+ * Whether Twilio SMS is configured (account SID, auth token and from number).
+ *
+ * @return bool
+ */
+function hsms_sms_configured() {
+	return '' !== hsms_get_setting( 'twilio_account_sid', '' )
+		&& '' !== hsms_get_setting( 'twilio_auth_token', '' )
+		&& '' !== hsms_get_setting( 'twilio_from', '' );
+}
+
+/**
+ * Normalise a phone number to E.164 (e.g. +61412345678) using the configured
+ * default country code for local numbers. Returns '' if it can't be made valid.
+ *
+ * @param string $raw          Raw phone input.
+ * @param string $country_code Default country calling code, digits only (e.g. "61").
+ * @return string
+ */
+function hsms_normalize_phone( $raw, $country_code = '' ) {
+	$raw = trim( (string) $raw );
+	if ( '' === $raw ) {
+		return '';
+	}
+	if ( '' === $country_code ) {
+		$country_code = preg_replace( '/\D/', '', hsms_get_setting( 'sms_country_code', '61' ) );
+	}
+
+	$has_plus = ( 0 === strpos( $raw, '+' ) );
+	$digits   = preg_replace( '/\D/', '', $raw );
+	if ( '' === $digits ) {
+		return '';
+	}
+
+	if ( $has_plus ) {
+		$e164 = '+' . $digits; // Already international.
+	} elseif ( 0 === strpos( $digits, '00' ) ) {
+		$e164 = '+' . substr( $digits, 2 ); // 00 international prefix.
+	} elseif ( 0 === strpos( $digits, '0' ) ) {
+		$e164 = '+' . $country_code . substr( $digits, 1 ); // Local trunk 0 -> country code.
+	} elseif ( '' !== $country_code && 0 === strpos( $digits, $country_code ) ) {
+		$e164 = '+' . $digits; // Already includes country code.
+	} else {
+		$e164 = '+' . $country_code . $digits; // Bare local number.
+	}
+
+	// Basic sanity: + followed by 8-15 digits (E.164 max is 15).
+	return preg_match( '/^\+\d{8,15}$/', $e164 ) ? $e164 : '';
+}
+
+/**
  * Convert a dollar value (string or float) to integer cents.
  *
  * @param mixed $value Dollar amount.

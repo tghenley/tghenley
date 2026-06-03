@@ -39,10 +39,13 @@ class HSMS_Install {
 	 */
 	public static function activate() {
 		self::create_tables();
+		update_option( 'hsms_db_version', HSMS_VERSION );
 
 		if ( false === get_option( HSMS_OPTION ) ) {
 			add_option( HSMS_OPTION, hsms_default_settings() );
 		}
+
+		HSMS_Reminders::schedule();
 
 		// The CPT isn't registered yet on activation, so register then flush.
 		HSMS_CPT_Manager::register_post_type();
@@ -53,7 +56,20 @@ class HSMS_Install {
 	 * Run on deactivation.
 	 */
 	public static function deactivate() {
+		HSMS_Reminders::unschedule();
 		flush_rewrite_rules();
+	}
+
+	/**
+	 * Run table upgrades when the plugin version changes (e.g. after an
+	 * update that adds a column). dbDelta adds any missing columns.
+	 */
+	public static function maybe_upgrade() {
+		if ( get_option( 'hsms_db_version' ) === HSMS_VERSION ) {
+			return;
+		}
+		self::create_tables();
+		update_option( 'hsms_db_version', HSMS_VERSION );
 	}
 
 	/**
@@ -91,6 +107,7 @@ class HSMS_Install {
 			payment_method varchar(20) NOT NULL DEFAULT 'invoice',
 			payment_link text NOT NULL,
 			created_at datetime NOT NULL,
+			reminder_sent_at datetime DEFAULT NULL,
 			PRIMARY KEY  (id),
 			UNIQUE KEY slot_id (slot_id),
 			KEY session_id (session_id)

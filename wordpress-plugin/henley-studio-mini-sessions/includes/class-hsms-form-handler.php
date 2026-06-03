@@ -86,6 +86,17 @@ class HSMS_Form_Handler {
 			HSMS_MailerLite::subscribe( $email, $name, $phone );
 		}
 
+		// Send an instant confirmation SMS if enabled and we have a number.
+		if ( hsms_sms_configured() && '1' === (string) hsms_get_setting( 'sms_send_confirmation', '1' ) ) {
+			$to = hsms_normalize_phone( $phone );
+			if ( '' !== $to ) {
+				$booking = HSMS_Bookings::get_with_slot( $booking_id );
+				if ( $booking ) {
+					HSMS_SMS::send( $to, HSMS_SMS::confirmation_text( $session, $booking ) );
+				}
+			}
+		}
+
 		// Generate a Square payment link when applicable.
 		if ( 'square' === $mode && $amount > 0 ) {
 			$label = $deposit > 0 ? __( 'Deposit', 'henley-studio-mini-sessions' ) : __( 'Payment', 'henley-studio-mini-sessions' );

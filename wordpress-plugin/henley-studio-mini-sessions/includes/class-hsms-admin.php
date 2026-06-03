@@ -165,6 +165,13 @@ class HSMS_Admin {
 			'mailerlite_api_key'  => isset( $input['mailerlite_api_key'] ) ? sanitize_text_field( $input['mailerlite_api_key'] ) : '',
 			'mailerlite_group_id' => isset( $input['mailerlite_group_id'] ) ? sanitize_text_field( $input['mailerlite_group_id'] ) : '',
 			'mailerlite_consent_label' => isset( $input['mailerlite_consent_label'] ) ? sanitize_text_field( $input['mailerlite_consent_label'] ) : '',
+			'twilio_account_sid'  => isset( $input['twilio_account_sid'] ) ? sanitize_text_field( $input['twilio_account_sid'] ) : '',
+			'twilio_auth_token'   => isset( $input['twilio_auth_token'] ) ? sanitize_text_field( $input['twilio_auth_token'] ) : '',
+			'twilio_from'         => isset( $input['twilio_from'] ) ? sanitize_text_field( $input['twilio_from'] ) : '',
+			'sms_country_code'    => isset( $input['sms_country_code'] ) ? preg_replace( '/\D/', '', $input['sms_country_code'] ) : '61',
+			'sms_send_confirmation' => empty( $input['sms_send_confirmation'] ) ? '0' : '1',
+			'sms_send_reminder'   => empty( $input['sms_send_reminder'] ) ? '0' : '1',
+			'sms_reminder_hours'  => isset( $input['sms_reminder_hours'] ) ? (string) max( 1, absint( $input['sms_reminder_hours'] ) ) : '24',
 		);
 	}
 
@@ -262,6 +269,44 @@ class HSMS_Admin {
 					<tr>
 						<th scope="row"><label for="hsms_ml_label"><?php esc_html_e( 'Consent checkbox text', 'henley-studio-mini-sessions' ); ?></label></th>
 						<td><input type="text" id="hsms_ml_label" class="large-text" name="<?php echo esc_attr( HSMS_OPTION ); ?>[mailerlite_consent_label]" value="<?php echo esc_attr( $s['mailerlite_consent_label'] ); ?>" /></td>
+					</tr>
+				</table>
+
+				<h2><?php esc_html_e( 'SMS reminders (Twilio)', 'henley-studio-mini-sessions' ); ?></h2>
+				<?php if ( hsms_sms_configured() ) : ?>
+					<div class="notice notice-success inline"><p><?php esc_html_e( 'Twilio is connected. SMS will send for the messages enabled below.', 'henley-studio-mini-sessions' ); ?></p></div>
+				<?php endif; ?>
+				<p class="description"><?php esc_html_e( 'Optional. Texts clients to cut no-shows. Get your Account SID and Auth Token from the Twilio Console, and use a Twilio phone number as the sender. Leave blank to disable SMS.', 'henley-studio-mini-sessions' ); ?></p>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><label for="hsms_tw_sid"><?php esc_html_e( 'Account SID', 'henley-studio-mini-sessions' ); ?></label></th>
+						<td><input type="text" id="hsms_tw_sid" class="regular-text" autocomplete="off" name="<?php echo esc_attr( HSMS_OPTION ); ?>[twilio_account_sid]" value="<?php echo esc_attr( $s['twilio_account_sid'] ); ?>" /></td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hsms_tw_token"><?php esc_html_e( 'Auth Token', 'henley-studio-mini-sessions' ); ?></label></th>
+						<td><input type="password" id="hsms_tw_token" class="regular-text" autocomplete="off" name="<?php echo esc_attr( HSMS_OPTION ); ?>[twilio_auth_token]" value="<?php echo esc_attr( $s['twilio_auth_token'] ); ?>" /></td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hsms_tw_from"><?php esc_html_e( 'From number', 'henley-studio-mini-sessions' ); ?></label></th>
+						<td><input type="text" id="hsms_tw_from" class="regular-text" name="<?php echo esc_attr( HSMS_OPTION ); ?>[twilio_from]" value="<?php echo esc_attr( $s['twilio_from'] ); ?>" placeholder="+61..." />
+						<p class="description"><?php esc_html_e( 'Your Twilio number in international format, e.g. +61480000000.', 'henley-studio-mini-sessions' ); ?></p></td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hsms_sms_cc"><?php esc_html_e( 'Default country code', 'henley-studio-mini-sessions' ); ?></label></th>
+						<td>+<input type="text" id="hsms_sms_cc" name="<?php echo esc_attr( HSMS_OPTION ); ?>[sms_country_code]" value="<?php echo esc_attr( $s['sms_country_code'] ); ?>" style="width:70px" />
+						<p class="description"><?php esc_html_e( 'Used to format local numbers (e.g. 61 for Australia turns 0412 345 678 into +61412345678).', 'henley-studio-mini-sessions' ); ?></p></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Messages', 'henley-studio-mini-sessions' ); ?></th>
+						<td>
+							<label><input type="checkbox" name="<?php echo esc_attr( HSMS_OPTION ); ?>[sms_send_confirmation]" value="1" <?php checked( '1', (string) $s['sms_send_confirmation'] ); ?> /> <?php esc_html_e( 'Send a confirmation text the moment a booking is made', 'henley-studio-mini-sessions' ); ?></label><br />
+							<label><input type="checkbox" name="<?php echo esc_attr( HSMS_OPTION ); ?>[sms_send_reminder]" value="1" <?php checked( '1', (string) $s['sms_send_reminder'] ); ?> /> <?php esc_html_e( 'Send a reminder text before the session', 'henley-studio-mini-sessions' ); ?></label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hsms_sms_hours"><?php esc_html_e( 'Send reminder', 'henley-studio-mini-sessions' ); ?></label></th>
+						<td><input type="number" id="hsms_sms_hours" min="1" max="336" name="<?php echo esc_attr( HSMS_OPTION ); ?>[sms_reminder_hours]" value="<?php echo esc_attr( $s['sms_reminder_hours'] ); ?>" style="width:80px" /> <?php esc_html_e( 'hours before the session', 'henley-studio-mini-sessions' ); ?>
+						<p class="description"><?php esc_html_e( 'Reminders are sent by an hourly background task, so timing is accurate to within an hour. For reliable timing on a low-traffic site, set up a real server cron to hit wp-cron.php.', 'henley-studio-mini-sessions' ); ?></p></td>
 					</tr>
 				</table>
 

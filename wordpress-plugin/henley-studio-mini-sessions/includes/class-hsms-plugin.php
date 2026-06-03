@@ -39,9 +39,13 @@ class HSMS_Plugin {
 	private function __construct() {
 		load_plugin_textdomain( 'henley-studio-mini-sessions', false, dirname( plugin_basename( HSMS_FILE ) ) . '/languages' );
 
+		// Apply any pending table upgrades (e.g. the SMS reminder column).
+		HSMS_Install::maybe_upgrade();
+
 		( new HSMS_CPT_Manager() )->init();
 		( new HSMS_Shortcodes() )->init();
 		( new HSMS_Form_Handler() )->init();
+		( new HSMS_Reminders() )->init();
 
 		if ( is_admin() ) {
 			( new HSMS_Admin() )->init();
