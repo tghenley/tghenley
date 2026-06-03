@@ -81,6 +81,11 @@ class HMS_Form_Handler {
 		// Notify the studio and the client.
 		$this->send_notifications( $session, $booking_id );
 
+		// Add to the newsletter if they consented (best-effort — never blocks).
+		if ( ! empty( $_POST['marketing_consent'] ) && hms_mailerlite_configured() ) {
+			HMS_MailerLite::subscribe( $email, $name, $phone );
+		}
+
 		// Generate a Square payment link when applicable.
 		if ( 'square' === $mode && $amount > 0 ) {
 			$label = $deposit > 0 ? __( 'Deposit', 'henleys-mini-sessions' ) : __( 'Payment', 'henleys-mini-sessions' );

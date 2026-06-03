@@ -29,6 +29,9 @@ function hms_default_settings() {
 		'square_access_token'  => '',
 		'square_location_id'   => '',
 		'square_environment'   => 'sandbox',
+		'mailerlite_api_key'   => '',
+		'mailerlite_group_id'  => '',
+		'mailerlite_consent_label' => 'Add me to the list for news and future mini sessions.',
 	);
 }
 
@@ -73,6 +76,15 @@ function hms_square_configured() {
  */
 function hms_payment_mode() {
 	return hms_square_configured() ? 'square' : 'invoice';
+}
+
+/**
+ * Whether MailerLite newsletter sign-up is configured (API key present).
+ *
+ * @return bool
+ */
+function hms_mailerlite_configured() {
+	return '' !== hms_get_setting( 'mailerlite_api_key', '' );
 }
 
 /**

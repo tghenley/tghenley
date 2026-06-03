@@ -117,6 +117,13 @@ if ( $collect <= 0 ) {
 					<label class="hms-label" for="hms-notes"><?php esc_html_e( 'Anything we should know?', 'henleys-mini-sessions' ); ?></label>
 					<textarea class="hms-input" id="hms-notes" name="notes" rows="3"></textarea>
 
+					<?php if ( hms_mailerlite_configured() ) : ?>
+						<label class="hms-consent">
+							<input type="checkbox" name="marketing_consent" value="1" />
+							<span><?php echo esc_html( hms_get_setting( 'mailerlite_consent_label', 'Add me to the list for news and future mini sessions.' ) ); ?></span>
+						</label>
+					<?php endif; ?>
+
 					<p class="hms-paynote"><?php echo esc_html( $pay_note ); ?></p>
 
 					<?php if ( $error ) : ?>

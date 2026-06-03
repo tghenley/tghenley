@@ -162,6 +162,9 @@ class HMS_Admin {
 			'square_access_token' => isset( $input['square_access_token'] ) ? sanitize_text_field( $input['square_access_token'] ) : '',
 			'square_location_id'  => isset( $input['square_location_id'] ) ? sanitize_text_field( $input['square_location_id'] ) : '',
 			'square_environment'  => ( isset( $input['square_environment'] ) && 'production' === $input['square_environment'] ) ? 'production' : 'sandbox',
+			'mailerlite_api_key'  => isset( $input['mailerlite_api_key'] ) ? sanitize_text_field( $input['mailerlite_api_key'] ) : '',
+			'mailerlite_group_id' => isset( $input['mailerlite_group_id'] ) ? sanitize_text_field( $input['mailerlite_group_id'] ) : '',
+			'mailerlite_consent_label' => isset( $input['mailerlite_consent_label'] ) ? sanitize_text_field( $input['mailerlite_consent_label'] ) : '',
 		);
 	}
 
@@ -241,6 +244,24 @@ class HMS_Admin {
 								<option value="production" <?php selected( $s['square_environment'], 'production' ); ?>><?php esc_html_e( 'Production (live)', 'henleys-mini-sessions' ); ?></option>
 							</select>
 						</td>
+					</tr>
+				</table>
+
+				<h2><?php esc_html_e( 'Newsletter (MailerLite)', 'henleys-mini-sessions' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Optional. When set, a consent checkbox appears on the booking form and consenting clients are added to your MailerLite group. Get an API key in MailerLite under Integrations → API.', 'henleys-mini-sessions' ); ?></p>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><label for="hms_ml_key"><?php esc_html_e( 'API key', 'henleys-mini-sessions' ); ?></label></th>
+						<td><input type="password" id="hms_ml_key" class="regular-text" autocomplete="off" name="<?php echo esc_attr( HMS_OPTION ); ?>[mailerlite_api_key]" value="<?php echo esc_attr( $s['mailerlite_api_key'] ); ?>" /></td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hms_ml_group"><?php esc_html_e( 'Group ID', 'henleys-mini-sessions' ); ?></label></th>
+						<td><input type="text" id="hms_ml_group" class="regular-text" name="<?php echo esc_attr( HMS_OPTION ); ?>[mailerlite_group_id]" value="<?php echo esc_attr( $s['mailerlite_group_id'] ); ?>" />
+						<p class="description"><?php esc_html_e( 'Optional. The numeric ID of the MailerLite group to add subscribers to. Leave blank to add them with no group.', 'henleys-mini-sessions' ); ?></p></td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="hms_ml_label"><?php esc_html_e( 'Consent checkbox text', 'henleys-mini-sessions' ); ?></label></th>
+						<td><input type="text" id="hms_ml_label" class="large-text" name="<?php echo esc_attr( HMS_OPTION ); ?>[mailerlite_consent_label]" value="<?php echo esc_attr( $s['mailerlite_consent_label'] ); ?>" /></td>
 					</tr>
 				</table>
 

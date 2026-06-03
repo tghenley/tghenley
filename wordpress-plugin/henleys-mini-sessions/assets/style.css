@@ -197,6 +197,17 @@
 .hms-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 480px) { .hms-row { grid-template-columns: 1fr; } }
 
+.hms-consent {
+	display: flex;
+	align-items: flex-start;
+	gap: 9px;
+	margin-top: 16px;
+	font-size: 13px;
+	color: rgba(59, 50, 44, 0.8);
+	cursor: pointer;
+}
+.hms-consent input { margin-top: 2px; }
+
 .hms-paynote {
 	margin-top: 20px;
 	background: rgba(231, 221, 208, 0.5);
