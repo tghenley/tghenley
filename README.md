@@ -1,5 +1,22 @@
 # Henley's Studio — Mini Sessions
 
+Two ways to run mini-session booking for Henley's Studio are included in this repo:
+
+| Option | Where it lives | Best when |
+| --- | --- | --- |
+| **WordPress plugin** → [`wordpress-plugin/henleys-mini-sessions/`](wordpress-plugin/henleys-mini-sessions/) | Inside your existing WordPress site | You want booking native to your WP site, in your theme, managed from wp-admin, with no recurring fees. **(Recommended for the existing WordPress site.)** |
+| **Standalone Next.js app** (below) | A separate deployable web app | You want a dedicated booking site/subdomain, or a starting point independent of WordPress. |
+
+Both share the same model and flow: clients browse open sessions, pick a time
+slot, and reserve; you manage everything privately; deposits are collected via
+**Square** (hosted checkout — Square handles all card security), with an
+**invoice fallback** when Square isn't configured. See the plugin's
+[`readme.txt`](wordpress-plugin/henleys-mini-sessions/readme.txt) for install steps.
+
+---
+
+## Standalone Next.js app
+
 A self-hosted booking app for running photography **mini sessions**, in the
 spirit of [usesession.com](https://usesession.com) but tailored for the
 Henley's Studio brand and fully owned by you.
