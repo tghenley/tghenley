@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name:       Henley's Studio — Mini Sessions
+ * Plugin Name:       Henley Studio — Mini Sessions
  * Plugin URI:        https://henleystudio.com
  * Description:       Sell and manage photography mini sessions. Clients pick a time slot and pay a deposit via Square (or you invoice them). Add the [mini_sessions] shortcode to any page.
  * Version:           1.0.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
- * Author:            Henley's Studio
+ * Author:            Henley Studio
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       henleys-mini-sessions

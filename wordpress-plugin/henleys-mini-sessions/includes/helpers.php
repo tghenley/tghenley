@@ -21,7 +21,7 @@ const HMS_STATUS_VALUES = array( 'pending', 'confirmed', 'paid', 'cancelled' );
  */
 function hms_default_settings() {
 	return array(
-		'studio_name'          => "Henley's Studio",
+		'studio_name'          => "Henley Studio",
 		'tagline'              => 'Mini Sessions',
 		'contact_email'        => get_option( 'admin_email' ),
 		'default_currency'     => 'AUD',

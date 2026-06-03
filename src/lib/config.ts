@@ -1,7 +1,7 @@
 // Centralised, environment-driven configuration.
 
 export const config = {
-  studioName: process.env.NEXT_PUBLIC_STUDIO_NAME || "Henley's Studio",
+  studioName: process.env.NEXT_PUBLIC_STUDIO_NAME || "Henley Studio",
   tagline: process.env.NEXT_PUBLIC_STUDIO_TAGLINE || "Mini Sessions",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "hello@henleystudio.com",
   defaultCurrency: process.env.DEFAULT_CURRENCY || "AUD",

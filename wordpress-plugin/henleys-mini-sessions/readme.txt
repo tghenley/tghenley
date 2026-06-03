@@ -1,4 +1,4 @@
-=== Henley's Studio — Mini Sessions ===
+=== Henley Studio — Mini Sessions ===
 Contributors: henleysstudio
 Tags: booking, photography, mini sessions, appointments, square
 Requires at least: 6.0

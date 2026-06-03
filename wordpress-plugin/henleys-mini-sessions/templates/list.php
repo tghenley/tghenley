@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$studio  = hms_get_setting( 'studio_name', "Henley's Studio" );
+$studio  = hms_get_setting( 'studio_name', "Henley Studio" );
 $tagline = hms_get_setting( 'tagline', 'Mini Sessions' );
 ?>
 <div class="hms">

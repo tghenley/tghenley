@@ -1,6 +1,6 @@
-# Henley's Studio — Mini Sessions
+# Henley Studio — Mini Sessions
 
-Two ways to run mini-session booking for Henley's Studio are included in this repo:
+Two ways to run mini-session booking for Henley Studio are included in this repo:
 
 | Option | Where it lives | Best when |
 | --- | --- | --- |
@@ -19,7 +19,7 @@ slot, and reserve; you manage everything privately; deposits are collected via
 
 A self-hosted booking app for running photography **mini sessions**, in the
 spirit of [usesession.com](https://usesession.com) but tailored for the
-Henley's Studio brand and fully owned by you.
+Henley Studio brand and fully owned by you.
 
 Clients browse your open session dates, pick an available time slot, and
 reserve it in a few taps. You manage everything from a private admin area.
@@ -100,7 +100,7 @@ annotated list. The essentials:
 | --- | --- |
 | `ADMIN_PASSWORD` | Password for the `/admin` area. **Change this.** |
 | `SESSION_SECRET` | Long random string used to sign the admin login cookie. |
-| `NEXT_PUBLIC_STUDIO_NAME` | Studio name shown throughout (default: Henley's Studio). |
+| `NEXT_PUBLIC_STUDIO_NAME` | Studio name shown throughout (default: Henley Studio). |
 | `NEXT_PUBLIC_TAGLINE` | Tagline under the name (default: Mini Sessions). |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Contact email shown to clients. |
 | `DEFAULT_CURRENCY` | Default currency for new sessions (e.g. `AUD`, `USD`). |

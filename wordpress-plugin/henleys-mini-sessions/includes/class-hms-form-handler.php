@@ -118,7 +118,7 @@ class HMS_Form_Handler {
 		if ( ! $booking ) {
 			return;
 		}
-		$studio = hms_get_setting( 'studio_name', "Henley's Studio" );
+		$studio = hms_get_setting( 'studio_name', "Henley Studio" );
 		$when   = hms_format_date( get_post_meta( $session->ID, '_hms_session_date', true ) ) . ', ' . hms_format_time_range( $booking->slot_start, $booking->slot_end );
 
 		// To the studio.
